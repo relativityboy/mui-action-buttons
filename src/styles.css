@@ -1,0 +1,30 @@
+button.actn-button {
+    /*background: orange !important;*/
+}
+
+button.actn-button.success {
+    transition: background-color 1s ease-in-out;
+    background: rgba(57, 202, 57, 0.79);
+}
+
+button.actn-button.error {
+    transition: background-color 1s ease-in-out;
+    background: rgba(255, 0, 0, 0.78);
+}
+
+@keyframes spin-icon {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+button.actn-button.spin-icon {
+    cursor: default;
+}
+
+button.actn-button.spin-icon .MuiButton-icon svg {
+    animation: spin 0.5s linear infinite ;
+}
