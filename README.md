@@ -27,17 +27,17 @@ async function handleSave() {
 </AIconButton>
 ```
 
-![save.png](docs/img/save.png)
+![save.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/save.png)
 
 For async calls, a spinner replaces the icon you passed in until it completes. 
 
-![spinning.png](docs/img/spinning.png)
+![spinning.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/spinning.png)
 
 If you click a button and the handler completes without error, the button gets a checkmark & changes color for 2 seconds.
 
-![success.png](docs/img/success.png)
+![success.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/success.png)
 
 If the handler throws an error, the button turns red, and displays a warning icon until clicked again.
 
-![error.png](docs/img/error.png)
+![error.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/error.png)
 

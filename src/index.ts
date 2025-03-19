@@ -1,2 +1,2 @@
-export { default as AButton } from "./AIconButton";
+export { default as AIconButton } from "./AIconButton";
 export type { AIconButtonProps } from "./AIconButton";
