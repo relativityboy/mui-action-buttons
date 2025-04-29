@@ -1,5 +1,7 @@
 # @Relativity - Action Buttons for MUI
 
+![Tests](https://github.com/relativityboy/mui-action-buttons/actions/workflows/ci.yml/badge.svg)
+
 If you want low-key responsiveness to api calls or user actions that should give the user "just a little" feedback
 these buttons should be perfect for you.
 
@@ -18,7 +20,7 @@ async function handleSave() {
     return true
 }
 
-...
+//...
 
 <AIconButton 
     endIcon={<SaveIcon/>} 
