@@ -12,7 +12,7 @@ button.actn-button.error {
     background: rgba(255, 0, 0, 0.78);
 }
 
-@keyframes spin-icon {
+@keyframes spin-icon-frames {
     from {
         transform: rotate(0deg);
     }
@@ -26,5 +26,5 @@ button.actn-button.spin-icon {
 }
 
 button.actn-button.spin-icon .MuiButton-icon svg {
-    animation: spin 0.5s linear infinite ;
+    animation: spin-icon-frames 0.5s linear infinite ;
 }
