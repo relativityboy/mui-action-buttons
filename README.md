@@ -24,7 +24,7 @@ async function handleSave() {
 
 <AIconButton 
     endIcon={<SaveIcon/>} 
-    onClick={handleSave()}
+    onClick={handleSave}
     >SAVE
 </AIconButton>
 ```
