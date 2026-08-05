@@ -12,10 +12,23 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
     const [spinning, setSpinning] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
     const [error, setError] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState('');
+
+    // NOTE(claude): handleClick keeps running across awaits after an unmount
+    // (e.g. the user navigates away mid-request or mid-flash), so every state
+    // write that follows an await checks this ref first.
+    const mountedRef = React.useRef(true);
+    React.useEffect(() => {
+        mountedRef.current = true;
+        return () => {
+            mountedRef.current = false;
+        };
+    }, []);
 
     async function handleClick () {
         if(error) {
             setError(false)
+            setErrorMessage('')
             return
         }
         if(spinning) {
@@ -24,14 +37,24 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
         setSpinning(true);
         try {
             await onClick()
-            setSpinning(false);
-            setSuccess(true);
         } catch (e) {
             console.error(e);
-            setSpinning(false);
-            setError(true);
+            if(mountedRef.current) {
+                setSpinning(false);
+                setError(true);
+                setErrorMessage(e instanceof Error ? e.message : String(e));
+            }
+            return;
         }
+        if(!mountedRef.current) {
+            return;
+        }
+        setSpinning(false);
+        setSuccess(true);
         await new Promise(r => setTimeout(r, 2000))
+        if(!mountedRef.current) {
+            return;
+        }
         setSuccess(false);
     }
 
@@ -48,6 +71,7 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
 
     const buttonProps = {...extraProps, className: classNames.join(' ')};
     if(spinning) {
+        buttonProps['aria-busy'] = true;
         if(buttonProps.endIcon) {
             buttonProps.endIcon = <CameraIcon/>;
         }
@@ -61,6 +85,11 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
         }
         if(buttonProps.startIcon) {
             buttonProps.startIcon = <WarningAmberIcon/>;
+        }
+        if(errorMessage) {
+            buttonProps.title = errorMessage;
+            const baseLabel = buttonProps['aria-label'] ?? (typeof children === 'string' ? children : undefined);
+            buttonProps['aria-label'] = baseLabel ? `${baseLabel}: ${errorMessage}` : errorMessage;
         }
     }
 
