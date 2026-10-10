@@ -39,12 +39,18 @@
     "typecheck:storybook": "tsc --noEmit -p tsconfig.storybook.json",
     "storybook:install-browser": "playwright install chromium",
     "test:storybook": "vitest run --project storybook",
-    "test:storybook:watch": "vitest --project storybook"
+    "test:storybook:watch": "vitest --project storybook",
+    "site": "vite --config vite.config.site.ts --host 127.0.0.1 --port 4173 --strictPort",
+    "build:site": "vite build --config vite.config.site.ts && storybook build --output-dir site-dist/storybook && node scripts/finalize-site.mjs",
+    "preview:site": "vite preview --config vite.config.site.ts --host 127.0.0.1 --port 4173 --strictPort",
+    "typecheck:site": "tsc --noEmit -p tsconfig.site.json",
+    "test:site": "node --test tests/site.test.mjs"
   },
   "keywords": ["react", "mui", "material-ui", "async", "button", "typescript"],
   "author": "",
   "license": "ISC",
   "description": "Async action buttons for React and MUI with pending, success, and dismissible error feedback.",
+  "homepage": "https://relativityboy.github.io/mui-action-buttons/",
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",

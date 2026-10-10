@@ -11,6 +11,8 @@ These instructions concern maintaining this repository.
 - `package.json` and `rollup.config.js`: package exports, peers, and shared dependencies.
 - `src/stories/AIconButton.stories.tsx`: interactive examples and browser checks.
 - `docs/agents.md`: plain Markdown usage contract, also rendered in Storybook.
+- `website/`: small static landing page with a real React button demo.
+- `scripts/finalize-site.mjs`: assembles public agent docs with the site build.
 
 ## Preserve the contract
 
@@ -35,6 +37,13 @@ Use Node 24 (`nvm use`) and `npm ci`. Available commands:
 - `npm run storybook:install-browser`: install Chromium before browser tests.
 - `npm run test:storybook`: rendered stories and async interactions in Chromium.
 - `npm run storybook`: local server; use `-- --port 6007` if port 6006 is occupied.
+- `npm run typecheck:site` and `npm run build:site`: check and build the landing page plus Storybook.
+- `npm run test:site`: check the static site in Chromium at the GitHub Pages project path.
+- `npm run preview:site`: preview the complete build on port 4173.
+
+Pages deployment follows successful checks on `main`. Keep site assets and
+documentation links working under `/mui-action-buttons/`, and keep website
+source and generated `site-dist/` out of the npm package.
 
 Run checks relevant to the change. For packaging changes, inspect
 `npm pack --dry-run` to confirm that the published package contains its docs

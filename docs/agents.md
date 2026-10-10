@@ -171,8 +171,10 @@ console.log(readFileSync(guide, 'utf8'));
 ```
 
 In a checkout, start with `llms.txt` and this file. The Storybook **Guide / Agents**
-page renders this same guide. `/llms.txt` exposes the discovery index, and
-`/docs/agents.md` serves this plain Markdown guide.
+page renders this same guide. `llms.txt` exposes the discovery index, and
+`docs/agents.md` serves this plain Markdown guide, both relative to the site's base URL.
+The public site is https://relativityboy.github.io/mui-action-buttons/ with
+Storybook under `storybook/`; the landing page includes a real component demo.
 **Guide / Usage** and the component stories provide interactive illustrations.
 Repository maintenance instructions are in `AGENTS.md`.
 

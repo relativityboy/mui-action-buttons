@@ -55,6 +55,10 @@ If the handler throws an error, the button turns red, and displays a warning ico
 
 ## Local Storybook
 
+The [package website](https://relativityboy.github.io/mui-action-buttons/) introduces
+the component with a live demo. The [hosted Storybook](https://relativityboy.github.io/mui-action-buttons/storybook/)
+contains interactive API examples and guides.
+
 Use Node 22.12 or newer (`nvm use` selects Node 24), then run:
 
 ```sh
@@ -82,6 +86,26 @@ The Accessibility panel reports findings, including existing component
 limitations; these are warnings in story tests. Storybook dependencies are
 development-only. The published package contains library assets, the plain
 Markdown agent guide, and its discovery index.
+
+## Website and GitHub Pages
+
+```sh
+npm run site                 # Develop the landing page at http://localhost:4173
+npm run typecheck:site
+npm run build:site           # Landing page + Storybook in site-dist/
+npm run preview:site         # Preview the complete static site at http://localhost:4173
+npm run test:site            # Chromium checks at the /mui-action-buttons/ project path
+```
+
+Install Chromium first with `npm run storybook:install-browser` if needed.
+The build serves the landing page at the root, Storybook at `storybook/`, and
+plain agent documentation at `llms.txt` and `docs/agents.md`. Asset paths are
+relative so the site works under GitHub's project URL.
+
+GitHub Pages uses **GitHub Actions** as its publishing source. The workflow
+builds and checks pull requests without deploying them. Pushes to `main`
+publish after the component, package, story, and site checks pass. The workflow
+can also be run manually on `main`. Generated files stay out of Git and npm.
 
 The dependency override for `@istanbuljs/load-nyc-config` selects `js-yaml` 4,
 which removes the legacy `argparse` / `sprintf-js` dependency chain affected by

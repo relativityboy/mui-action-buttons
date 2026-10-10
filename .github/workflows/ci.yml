@@ -1,10 +1,18 @@
-name: Run Tests
+name: Checks and GitHub Pages
 
 on:
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-pages-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -39,9 +47,35 @@ jobs:
       - run: npm ci
       - name: Check Storybook types
         run: npm run typecheck:storybook
-      - name: Build Storybook
-        run: npm run build-storybook
+      - name: Check landing page types
+        run: npm run typecheck:site
+      - name: Build landing page and Storybook
+        run: npm run build:site
       - name: Install browser and system dependencies
         run: npm run storybook:install-browser -- --with-deps
       - name: Test stories in Chromium
         run: npm run test:storybook
+      - name: Test the built site at its GitHub Pages path
+        run: npm run test:site
+      - name: Upload GitHub Pages site
+        if: github.repository == 'relativityboy/mui-action-buttons' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site-dist
+
+  deploy:
+    if: github.repository == 'relativityboy/mui-action-buttons' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: [test, storybook]
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy landing page and Storybook
+        id: deployment
+        uses: actions/deploy-pages@v4

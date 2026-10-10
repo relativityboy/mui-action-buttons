@@ -17,6 +17,7 @@ the installed guide and declarations over the repository's latest documentation.
 
 ## Optional
 
+- [Package website](https://relativityboy.github.io/mui-action-buttons/): Brief introduction and live component demo; interactive documentation is under storybook/.
 - [README](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/README.md): Human introduction and Storybook commands.
 - [Repository agent instructions](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/AGENTS.md): Guidance for maintaining this repository.
 - [Interactive story source](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/src/stories/AIconButton.stories.tsx): Examples and browser interaction checks; simulation controls belong to the demos.

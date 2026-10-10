@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "skipLibCheck": true,
+    "types": ["node", "vite/client", "react", "react-dom"]
+  },
+  "include": ["website/**/*.tsx", "vite.config.site.ts"]
+}

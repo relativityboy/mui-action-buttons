@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MUI Action Buttons · Give every click a little closure</title>
+    <meta name="description" content="AIconButton brings pending, success, and dismissible error feedback to your MUI buttons. Await a promise. Keep your theme. Make the wait feel considered." />
+    <meta name="theme-color" content="#f6f4ee" />
+    <meta property="og:title" content="MUI Action Buttons · Good buttons follow through." />
+    <meta property="og:description" content="A small React component that turns an async action into clear, considerate feedback." />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://relativityboy.github.io/mui-action-buttons/" />
+    <link rel="describedby" href="./llms.txt" type="text/plain" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="page">
+      <header class="site-header">
+        <a class="brand" href="./" aria-label="MUI Action Buttons home">
+          <span class="brand-mark" aria-hidden="true">✳</span>
+          <span>MUI Action Buttons<small>by Relativity</small></span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="./storybook/?path=/docs/guide-usage--docs">Documentation</a>
+          <a href="https://github.com/relativityboy/mui-action-buttons">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+
+      <main id="main">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="little-dot" aria-hidden="true"></span> Small component. Thoughtful feedback.</p>
+            <h1 id="hero-title">Good buttons<br /><em>follow through.</em></h1>
+            <p class="hero-description">A standard button registers a click. <strong>AIconButton follows the promise:</strong> a spin while it works, a green glow when it succeeds, and a clear way back when it fails.</p>
+            <div class="hero-links">
+              <a class="primary-link" href="./storybook/">Explore Storybook <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="#get-started">Get started <span aria-hidden="true">↓</span></a>
+            </div>
+            <p class="compatibility">React 18 / 19 <span aria-hidden="true">·</span> MUI 6 <span aria-hidden="true">·</span> TypeScript ready</p>
+          </div>
+
+          <div class="demo-card">
+            <div class="demo-card-top"><span class="eyebrow">A little interaction, live</span><span class="live-label"><span aria-hidden="true"></span> Try it</span></div>
+            <h2>Feel the follow-through.</h2>
+            <p>Choose a path. Give the button a click.</p>
+            <div id="demo-root"></div>
+            <noscript><p>Enable JavaScript to try the live button. The <a href="./docs/agents.md">plain Markdown guide</a> explains its behavior.</p></noscript>
+            <p class="demo-footnote">Real component. Simulated save. No backend.</p>
+          </div>
+        </section>
+
+        <section class="benefits" aria-label="Why use an async action button?">
+          <article><span class="benefit-number">01 / CLARITY</span><h2>Make the wait visible.</h2><p>People shouldn’t have to wonder whether their click worked. Pending icons and success or error colors give the action a visible rhythm.</p></article>
+          <article><span class="benefit-number">02 / LESS PLUMBING</span><h2>Let the promise do the talking.</h2><p>Await your action in one callback. The component handles its feedback and ignores extra clicks on that button while the request runs.</p></article>
+          <article><span class="benefit-number">03 / A FAMILIAR FIT</span><h2>Keep the MUI you know.</h2><p>Your theme, your icons, your button props. Add async feedback without inventing another button system or another styling language.</p></article>
+        </section>
+
+        <section id="get-started" class="get-started" aria-labelledby="start-title">
+          <div class="start-copy"><p class="eyebrow">Small addition. Better feeling.</p><h2 id="start-title">A promise is all it takes.</h2><p>Import the stylesheet, pass an async action, and give it a good name. Resolve for success; throw for a dismissible error.</p><a class="text-link" href="./storybook/?path=/docs/guide-usage--docs">Read the full usage guide <span aria-hidden="true">→</span></a></div>
+          <div class="code-card">
+            <div class="install-command"><code>npm install @relativity/mui-action-buttons</code><button id="copy-install" type="button" aria-label="Copy install command">Copy</button></div>
+            <pre><code>import { AIconButton } from '@relativity/mui-action-buttons';
+import '@relativity/mui-action-buttons/styles.css';
+
+&lt;AIconButton onClick={async () =&gt; { await saveChanges(); }}&gt;
+  Save my masterpiece
+&lt;/AIconButton&gt;</code></pre>
+            <p>Use with compatible React, MUI, and Emotion peers. Add a start or end icon for the spinner.</p>
+            <span id="copy-status" class="sr-only" role="status"></span>
+          </div>
+        </section>
+      </main>
+
+      <footer><p>Spin. Settle. Celebrate. Retry with care.</p><nav aria-label="More resources"><a href="./docs/agents.md">Agent guide</a><a href="./llms.txt">llms.txt</a><a href="https://www.npmjs.com/package/@relativity/mui-action-buttons">npm <span aria-hidden="true">↗</span></a></nav></footer>
+    </div>
+    <script type="module" src="./demo.tsx"></script>
+  </body>
+</html>
