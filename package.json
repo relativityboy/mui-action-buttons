@@ -34,6 +34,7 @@
     "build": "tsc -p tsconfig.build.json && rollup -c && cp src/styles.css dist/styles.css",
     "test": "jest",
     "test:package": "npm run build && node --test tests/package.test.mjs",
+    "test:publish": "node --test tests/publish.test.mjs",
     "storybook": "storybook dev --host 127.0.0.1 -p 6006 --no-open",
     "build-storybook": "storybook build",
     "typecheck:storybook": "tsc --noEmit -p tsconfig.storybook.json",

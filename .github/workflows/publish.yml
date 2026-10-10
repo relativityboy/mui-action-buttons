@@ -1,0 +1,98 @@
+name: Publish to npm
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Do not interrupt a release or let two runs publish the same version together.
+concurrency:
+  group: npm-publish
+  cancel-in-progress: false
+
+jobs:
+  version:
+    if: github.repository == 'relativityboy/mui-action-buttons' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      should_publish: ${{ steps.version.outputs.should_publish }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Compare repository version with npm
+        id: version
+        run: node scripts/check-npm-version.mjs
+
+  verify:
+    needs: version
+    if: needs.version.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Install dependencies
+        run: npm ci
+      - name: Test publishing decisions
+        run: npm run test:publish
+      - name: Run component tests
+        run: npm test -- --runInBand
+      - name: Build and test the npm package
+        run: npm run test:package
+      - name: Check Storybook types
+        run: npm run typecheck:storybook
+      - name: Check landing page types
+        run: npm run typecheck:site
+      - name: Build landing page and Storybook
+        run: npm run build:site
+      - name: Install Chromium and system dependencies
+        run: npm run storybook:install-browser -- --with-deps
+      - name: Run Storybook browser tests
+        run: npm run test:storybook
+      - name: Test the built website
+        run: npm run test:site
+      - name: Pack the verified library
+        run: |
+          mkdir -p "$RUNNER_TEMP/npm-package"
+          npm pack --pack-destination "$RUNNER_TEMP/npm-package"
+      - name: Save the verified package for publishing
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-package/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: [version, verify]
+    if: needs.version.outputs.should_publish == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          package-manager-cache: false
+      - name: Download the verified package
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-package
+          path: ${{ runner.temp }}/npm-package
+      - name: Recheck npm immediately before publishing
+        id: version
+        run: node scripts/check-npm-version.mjs
+      - name: Publish the verified package using npm trusted publishing
+        if: steps.version.outputs.should_publish == 'true'
+        run: npm publish "$RUNNER_TEMP"/npm-package/*.tgz --access public --tag latest --registry=https://registry.npmjs.org --ignore-scripts

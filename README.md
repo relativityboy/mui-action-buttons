@@ -107,6 +107,41 @@ builds and checks pull requests without deploying them. Pushes to `main`
 publish after the component, package, story, and site checks pass. The workflow
 can also be run manually on `main`. Generated files stay out of Git and npm.
 
+## Publishing to npm
+
+The separate `.github/workflows/publish.yml` workflow runs automatically on pushes
+to `main` and can be rerun manually on `main`. It compares `package.json` with the
+public npm registry before installing dependencies. If that version already
+exists (including a version older than `latest`), it skips tests and publication
+in this workflow; the regular CI workflow still runs. Registry failures stop
+publication rather than treating the package as unpublished.
+
+For an unpublished version, it installs with `npm ci` and requires the publishing
+gate tests, component tests, package checks, Storybook/site type checks, static
+site build, and both browser suites to pass. It packs the verified library and
+passes that tarball to a separate publish job, which rechecks npm and publishes
+it publicly with the `latest` tag. Release runs are serialized and not cancelled
+mid-publication. No version is bumped automatically.
+
+Configure [npm trusted publishing](https://docs.npmjs.com/trusted-publishers/)
+once in the npm package's **Settings → Trusted Publisher → GitHub Actions**:
+
+- Organization or user: `relativityboy`
+- Repository: `mui-action-buttons`
+- Workflow filename: `publish.yml` (just the filename)
+- Environment: leave blank (this workflow has no environment)
+- Allowed actions: enable direct publishing with `npm publish`
+
+The workflow uses Node 24 and npm's OIDC authentication; no `NPM_TOKEN` secret
+is required. Configure trust shortly before the first release: npm requires a
+new trusted publisher to complete its first successful publish within two days.
+
+To release, update both `package.json` and `package-lock.json` with
+`npm version <version> --no-git-tag-version`, commit the changes, and push to
+`main`. A changed, unpublished version triggers the full test-and-publish path.
+Only put stable releases on this path because it updates `latest`.
+Run `npm run test:publish` locally to check the gate without accessing npm.
+
 The dependency override for `@istanbuljs/load-nyc-config` selects `js-yaml` 4,
 which removes the legacy `argparse` / `sprintf-js` dependency chain affected by
 [GHSA-hp3w-g68c-fv3c](https://github.com/advisories/GHSA-hp3w-g68c-fv3c).

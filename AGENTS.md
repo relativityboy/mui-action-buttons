@@ -32,6 +32,7 @@ Use Node 24 (`nvm use`) and `npm ci`. Available commands:
 
 - `npm test -- --runInBand`: component tests.
 - `npm run test:package`: library build and Node ESM/CommonJS package checks.
+- `npm run test:publish`: npm version gate tests (mocked registry; never publishes).
 - `npm run typecheck:storybook`: story/configuration type checks.
 - `npm run build-storybook`: static documentation build.
 - `npm run storybook:install-browser`: install Chromium before browser tests.
@@ -44,6 +45,11 @@ Use Node 24 (`nvm use`) and `npm ci`. Available commands:
 Pages deployment follows successful checks on `main`. Keep site assets and
 documentation links working under `/mui-action-buttons/`, and keep website
 source and generated `site-dist/` out of the npm package.
+
+The separate `publish.yml` workflow checks npm before installing dependencies,
+skips existing versions, and requires all tests and type checks before publishing
+the verified tarball. Keep npm OIDC permissions confined to its publish job.
+See README.md for the npm trusted publisher configuration and release procedure.
 
 Run checks relevant to the change. For packaging changes, inspect
 `npm pack --dry-run` to confirm that the published package contains its docs

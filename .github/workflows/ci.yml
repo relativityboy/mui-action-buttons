@@ -33,6 +33,9 @@ jobs:
       - name: Run tests
         run: npm run test
 
+      - name: Test npm publishing decisions
+        run: npm run test:publish
+
       - name: Check built package
         run: npm run test:package
 
