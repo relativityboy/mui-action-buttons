@@ -2,42 +2,72 @@
   "name": "@relativity/mui-action-buttons",
   "version": "0.3.2",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "dist"
+    "dist/index.cjs",
+    "dist/index.cjs.map",
+    "dist/index.mjs",
+    "dist/index.mjs.map",
+    "dist/index.d.ts",
+    "dist/index.d.ts.map",
+    "dist/AIconButton.d.ts",
+    "dist/AIconButton.d.ts.map",
+    "dist/styles.css"
   ],
   "scripts": {
-    "build": "rollup -c  && cp src/styles.css dist/styles.css",
-    "test": "jest"
+    "build": "tsc -p tsconfig.build.json && rollup -c && cp src/styles.css dist/styles.css",
+    "test": "jest",
+    "test:package": "npm run build && node --test tests/package.test.mjs"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "dependencies": {
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.4.8",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
-    "react": "^19.0.0"
-  },
-  "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-typescript": "^12.1.2",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
-    "@types/jest": "^29.5.14",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "@types/jest": "^30.0.0",
+    "@types/react": "^19.0.0",
+    "jest": "^30.0",
+    "jest-environment-jsdom": "^30.5.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "rollup": "^4.36.0",
-    "ts-jest": "^29.3.2",
+    "ts-jest": "^29.4.14",
     "ts-node": "^10.9.2",
     "tsconfig-paths-jest": "^0.0.1",
     "tslib": "^2.8.1",
     "typescript": "^5.8.2"
+  },
+  "overrides": {
+    "@istanbuljs/load-nyc-config": {
+      "js-yaml": "^4.3.2"
+    }
   },
   "repository": {
     "type": "git",

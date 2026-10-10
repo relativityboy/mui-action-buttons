@@ -7,6 +7,11 @@ these buttons should be perfect for you.
 
 `npm install @relativity/mui-action-buttons`
 
+The package supports React 18.2 and React 19 with MUI 6 and Emotion 11.
+React, React DOM, MUI, and Emotion are peer dependencies so the button shares
+the application's React instance, theme, and styling cache. Both CommonJS and
+ES module entry points include the `"use client"` directive for Next.js.
+
 The first button I've implemented is the `AIconButton`. It takes a string, and an `endIcon` or `startIcon` prop.
 
 Example save button: 
@@ -42,4 +47,10 @@ If you click a button and the handler completes without error, the button gets a
 If the handler throws an error, the button turns red, and displays a warning icon until clicked again.
 
 ![error.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/error.png)
+
+The dependency override for `@istanbuljs/load-nyc-config` selects `js-yaml` 4,
+which removes the legacy `argparse` / `sprintf-js` dependency chain affected by
+[GHSA-hp3w-g68c-fv3c](https://github.com/advisories/GHSA-hp3w-g68c-fv3c).
+The config loader uses the supported `load()` API. Remove the override when the
+upstream loader updates its dependency to an unaffected version.
 

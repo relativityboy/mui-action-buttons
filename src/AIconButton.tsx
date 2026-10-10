@@ -1,5 +1,7 @@
+"use client";
+
 import React from "react";
-import Button, {ButtonProps} from "@mui/material/Button";
+import { Button, type ButtonProps } from "@mui/material";
 import CameraIcon from '@mui/icons-material/Camera';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
@@ -18,10 +20,15 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
     // (e.g. the user navigates away mid-request or mid-flash), so every state
     // write that follows an await checks this ref first.
     const mountedRef = React.useRef(true);
+    const successTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
     React.useEffect(() => {
         mountedRef.current = true;
         return () => {
             mountedRef.current = false;
+            if(successTimerRef.current !== null) {
+                clearTimeout(successTimerRef.current);
+                successTimerRef.current = null;
+            }
         };
     }, []);
 
@@ -34,6 +41,11 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
         if(spinning) {
             return;
         }
+        if(successTimerRef.current !== null) {
+            clearTimeout(successTimerRef.current);
+            successTimerRef.current = null;
+        }
+        setSuccess(false);
         setSpinning(true);
         try {
             await onClick()
@@ -51,11 +63,12 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
         }
         setSpinning(false);
         setSuccess(true);
-        await new Promise(r => setTimeout(r, 2000))
-        if(!mountedRef.current) {
-            return;
-        }
-        setSuccess(false);
+        successTimerRef.current = setTimeout(() => {
+            successTimerRef.current = null;
+            if(mountedRef.current) {
+                setSuccess(false);
+            }
+        }, 2000);
     }
 
     const classNames = ['actn-button', className]

@@ -6,6 +6,61 @@ import '@testing-library/jest-dom';
 jest.useFakeTimers();
 
 describe('AIconButton', () => {
+    it('keeps each repeated success visible for its full two seconds', async () => {
+        const { getByRole } = render(
+            <AIconButton onClick={async () => {}}>Click Me</AIconButton>
+        );
+        const button = getByRole('button');
+
+        await act(async () => { fireEvent.click(button); });
+        await act(async () => { jest.advanceTimersByTime(1000); });
+        await act(async () => { fireEvent.click(button); });
+        await act(async () => { jest.advanceTimersByTime(1100); });
+        expect(button).toHaveClass('success');
+
+        await act(async () => { jest.advanceTimersByTime(900); });
+        expect(button).not.toHaveClass('success');
+    });
+
+    it('clears the previous success while a new request runs and fails', async () => {
+        let rejectClick: (error: Error) => void = () => {};
+        const onClickMock = jest.fn()
+            .mockResolvedValueOnce(undefined)
+            .mockImplementationOnce(() => new Promise<void>((_resolve, reject) => {
+                rejectClick = reject;
+            }));
+        const { getByRole } = render(
+            <AIconButton onClick={onClickMock}>Click Me</AIconButton>
+        );
+        const button = getByRole('button');
+
+        await act(async () => { fireEvent.click(button); });
+        expect(button).toHaveClass('success');
+        fireEvent.click(button);
+        expect(button).toHaveClass('spin-icon');
+        expect(button).not.toHaveClass('success');
+
+        const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        try {
+            await act(async () => { rejectClick(new Error('Test Error')); });
+            expect(button).toHaveClass('error');
+            expect(button).not.toHaveClass('success');
+            expect(button).not.toHaveClass('spin-icon');
+        } finally {
+            consoleErrorSpy.mockRestore();
+        }
+    });
+
+    it('cancels the success timer when unmounted', async () => {
+        const { getByRole, unmount } = render(
+            <AIconButton onClick={async () => {}}>Click Me</AIconButton>
+        );
+        await act(async () => { fireEvent.click(getByRole('button')); });
+        const timerCountBeforeUnmount = jest.getTimerCount();
+        unmount();
+        expect(jest.getTimerCount()).toBe(timerCountBeforeUnmount - 1);
+    });
+
     it('renders correctly with children', () => {
         const { getByText } = render(
             <AIconButton onClick={async () => {}}>Click Me</AIconButton>
