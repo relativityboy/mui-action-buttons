@@ -1,0 +1,22 @@
+# @relativity/mui-action-buttons
+
+> A small React library for MUI buttons that await an async action and show pending, success, or dismissible error feedback.
+
+The public component is `AIconButton`; its exported props type is `AIconButtonProps`.
+Use React 18.2 or 19, MUI 6, and Emotion 11. Import the package stylesheet once.
+The required callback is `() => Promise<void>`: resolve for success, throw for
+failure. The first click after failure dismisses the error; the next retries.
+
+The guide below is included in the npm package. For installed versions, prefer
+the installed guide and declarations over the repository's latest documentation.
+
+## Usage
+
+- [Agent usage guide](docs/agents.md): Installation, complete examples, callback contract, API, accessibility, troubleshooting, and a little playful inspiration. Available locally in this repository and in the npm package.
+- [Repository usage guide](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/agents.md): Plain Markdown for agents reading the repository remotely; describes the main branch.
+
+## Optional
+
+- [README](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/README.md): Human introduction and Storybook commands.
+- [Repository agent instructions](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/AGENTS.md): Guidance for maintaining this repository.
+- [Interactive story source](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/src/stories/AIconButton.stories.tsx): Examples and browser interaction checks; simulation controls belong to the demos.

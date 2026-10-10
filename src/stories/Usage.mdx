@@ -1,0 +1,122 @@
+import { Meta, Canvas, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './AIconButton.stories';
+
+<Meta title="Guide/Usage" />
+
+# Async action buttons for MUI
+
+`AIconButton` gives a MUI button feedback for a promise: pending, success, or an
+error that the user can dismiss. These examples simulate requests locally;
+they do not call a backend.
+
+## Start here
+
+Install `@relativity/mui-action-buttons` alongside React 18.2 or 19, React DOM,
+MUI 6, and Emotion 11. Import the stylesheet once in your application.
+The icons in these examples come from the optional `@mui/icons-material` package.
+
+<Source language="tsx" code={`import { AIconButton } from '@relativity/mui-action-buttons';
+import '@relativity/mui-action-buttons/styles.css';
+import SaveIcon from '@mui/icons-material/Save';
+
+async function saveChanges(): Promise<void> {
+  const response = await fetch('/api/settings', { method: 'POST' });
+  if (!response.ok) throw new Error('Unable to save settings.');
+}
+
+<AIconButton onClick={saveChanges} endIcon={<SaveIcon />}>
+  Save changes
+</AIconButton>`} />
+
+Open **Components → AIconButton → Playground** for editable controls. Choose a
+delay and outcome, then click the button. The Actions panel records callback
+invocations; the toolbar switches the real MUI theme between light and dark.
+
+<Canvas of={Stories.Playground} />
+
+## What happens after a click
+
+1. **Pending:** existing start/end icons spin, `aria-busy` is set, and further
+   clicks are ignored. The button remains enabled while the request runs.
+2. **Success:** the original icons return and the background turns green for
+   two seconds. A new request clears the previous flash and gets its own timer.
+3. **Failure:** existing icons become warning icons and the background turns
+   red. The failure message is exposed through `title` and `aria-label`.
+4. **Dismiss and retry:** the first click after failure only dismisses the
+   error. The next click invokes the callback again.
+
+The callback has the signature `() => Promise<void>` and receives no click
+event. Resolve to indicate success; throw or reject to indicate failure.
+For `fetch`, check `response.ok` yourself because HTTP failures do not reject
+the promise automatically.
+
+<Canvas of={Stories.Pending} />
+<Canvas of={Stories.RetryAfterError} />
+
+## API and examples
+
+The component accepts MUI Button props, with a required async `onClick` callback.
+The component's default variant is `contained`.
+
+<table>
+  <thead><tr><th>Prop</th><th>Purpose</th><th>Example</th></tr></thead>
+  <tbody>
+    <tr><td><code>onClick</code></td><td>Required async callback</td><td><code>{'async () => { await saveChanges(); }'}</code></td></tr>
+    <tr><td><code>children</code></td><td>Visible label or React content</td><td>Save changes</td></tr>
+    <tr><td><code>startIcon</code>, <code>endIcon</code></td><td>Icons on either side of the label</td><td><code>{'<SaveIcon />'}</code></td></tr>
+    <tr><td><code>variant</code></td><td>contained, outlined, or text</td><td>See Variants</td></tr>
+    <tr><td><code>color</code></td><td>MUI palette color</td><td>See Colors</td></tr>
+    <tr><td><code>size</code></td><td>small, medium, or large</td><td>See Sizes</td></tr>
+    <tr><td><code>disabled</code></td><td>Disable all clicks</td><td>See Disabled</td></tr>
+    <tr><td><code>fullWidth</code></td><td>Fill the parent container</td><td>See Full Width</td></tr>
+    <tr><td><code>disableElevation</code>, <code>disableRipple</code></td><td>MUI visual behavior</td><td>Playground controls</td></tr>
+    <tr><td><code>sx</code></td><td>Theme-aware MUI system styling</td><td>See Custom Styling</td></tr>
+    <tr><td><code>className</code></td><td>Additional app CSS classes</td><td><code>custom-save-action</code></td></tr>
+    <tr><td><code>aria-label</code></td><td>Explicit accessible name</td><td>See Accessible Label</td></tr>
+    <tr><td><code>title</code></td><td>Tooltip, replaced by the message during error</td><td>Save account settings</td></tr>
+  </tbody>
+</table>
+
+The delay, outcome, and failure-message controls belong to the demos only.
+They are not props of `AIconButton`. The generated component docs list the
+controls and show source examples. Refer to the
+[MUI 6 Button API](https://v6.mui.com/material-ui/api/button/) for inherited props.
+
+<Canvas of={Stories.IconPlacement} />
+<Canvas of={Stories.CustomStyling} />
+<Canvas of={Stories.ThemeIntegration} />
+
+## Accessibility and current limitations
+
+- Provide visible button text or an explicit `aria-label`. With rich children,
+  set `aria-label` to preserve the action's name when an error occurs.
+- A button without start/end icons has no visual spinner. It still reports
+  `aria-busy` and shows the success/error background.
+- Success currently changes the background and restores the original icon;
+  it does not render a checkmark.
+- Use `sx` for styling. The component currently replaces the inline `style` prop.
+- The feedback CSS targets native `button` elements. Using `href` or an anchor
+  root does not get that feedback styling, and navigation is not held until
+  the async callback finishes.
+- The Accessibility panel reports findings. Existing accessibility limitations
+  are reported as warnings during story tests rather than silently suppressed.
+
+<Canvas of={Stories.AccessibleLabel} />
+
+## Local development
+
+Use Node 22.12 or newer; `.nvmrc` selects Node 24.
+
+<Source language="bash" code={`npm ci
+npm run storybook
+# http://localhost:6006
+
+npm run build-storybook
+npm run typecheck:storybook
+
+# Install Chromium once before running browser tests:
+npm run storybook:install-browser
+npm run test:storybook`} />
+
+The static build is written to `storybook-static/`. Storybook is development
+tooling and is not included in the published package.

@@ -7,9 +7,18 @@ import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
 
 export interface AIconButtonProps extends ButtonProps {
+    /**
+     * Async action, called without a mouse event. Await the real work; resolve
+     * for a two-second success indication or reject to show a dismissible error.
+     * The first click after an error dismisses it; the next click retries.
+     */
     onClick: () => Promise<void>;
 }
 
+/**
+ * MUI Button with async feedback. Import the package's styles.css once and use
+ * sx for styling. See docs/agents.md for examples and the integration contract.
+ */
 export const AIconButton: React.FC<AIconButtonProps> = ({children, className='', onClick, ...extraProps}) => {
     const [spinning, setSpinning] = React.useState(false);
     const [success, setSuccess] = React.useState(false);
@@ -109,7 +118,7 @@ export const AIconButton: React.FC<AIconButtonProps> = ({children, className='',
     return (
         <Button variant='contained' {...buttonProps}
                 onClick={handleClick}
-                style={{verticalAlign: 'bottom', display:'inline-block'}}
+                style={{verticalAlign: 'bottom'}}
         >
             {children}
         </Button>

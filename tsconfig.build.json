@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist/esm",
+    "declarationDir": "dist",
+    "types": ["react", "react-dom"]
+  },
+  "include": ["src/index.ts"],
+  "exclude": ["src/**/*.test.tsx", "src/stories"]
+}
