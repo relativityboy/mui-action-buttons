@@ -1,0 +1,5 @@
+- Update React and React DOM together to 19.3; retain React 18/19 peer support.
+- Update TypeScript to 5.9.3; defer newer majors until tooling and configuration support them.
+- Remove unused `tsconfig-paths-jest` and `tslib`; fix Jest's missing `identity-obj-proxy` dependency.
+- Update MUI Material and Icons together to v9; test compatibility before widening peer support, retaining v6 where possible.
+- Consider migrating component tests to Vitest and removing redundant Jest tooling and overrides.
