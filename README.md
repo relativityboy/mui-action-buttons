@@ -5,6 +5,10 @@
 If you want low-key responsiveness to api calls or user actions that should give the user "just a little" feedback
 these buttons should be perfect for you.
 
+Explore the [live Storybook](https://relativityboy.github.io/mui-action-buttons/storybook/)
+for interactive examples and API guides, or visit the
+[package website](https://relativityboy.github.io/mui-action-buttons/) for a quick demo.
+
 `npm install @relativity/mui-action-buttons`
 
 For coding assistants, start with the [agent usage guide](docs/agents.md) or
@@ -54,10 +58,6 @@ If the handler throws an error, the button turns red, and displays a warning ico
 ![error.png](https://raw.githubusercontent.com/relativityboy/mui-action-buttons/main/docs/img/error.png)
 
 ## Local Storybook
-
-The [package website](https://relativityboy.github.io/mui-action-buttons/) introduces
-the component with a live demo. The [hosted Storybook](https://relativityboy.github.io/mui-action-buttons/storybook/)
-contains interactive API examples and guides.
 
 Use Node 22.12 or newer (`nvm use` selects Node 24), then run:
 
